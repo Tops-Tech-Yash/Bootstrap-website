@@ -1,0 +1,719 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description"
+            content="Gujarati movies collection - watch trailers, info, and more.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>S2S</title>
+        <link rel="shortcut icon" href="Assets-1/icon2.jpg" type="image/x-icon">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Delius&display=swap"
+            rel="stylesheet">
+        <script
+            src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js"
+            type="module"></script>
+
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+           html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* hides scrollbars */
+      height: 100%;
+    }
+
+    body.loaded {
+      overflow: auto;
+    }
+
+    #preloader, #error-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #563d7c;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    /* Hide preloader after load */
+    body.loaded #preloader {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Hide error loader by default */
+    #error-loader {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Show error loader when triggered */
+    body.error #error-loader {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    #watch-now-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  /* Show when active */
+  #watch-now-loader.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+                ::-webkit-scrollbar-track {
+                border-radius: 100%;
+                }
+                
+                ::-webkit-scrollbar-thumb {
+                background: #563d7c; 
+                }
+
+                ::-webkit-scrollbar-thumb:hover {
+                background: #b30000; 
+                }
+
+                body{
+                    background-color: #563d7c;
+                    overflow-x: hidden; 
+                }
+
+                .navbar{
+                    background-color: #563d7c;
+                }
+
+                .carousel-item > h5, p{
+                    font-weight: 700;
+                }
+                .footer {
+                    font-family: "Delius", cursive;
+                    font-size: 15px;
+                    letter-spacing: 2px;
+                }
+                h2{
+                    font-family: "Delius", cursive;
+                    font-size: 30px;
+                    font-weight: 500;
+                }
+            </style>
+    </head>
+    <body>
+        <div id="preloader">
+            <dotlottie-wc
+                src="https://lottie.host/cc317fc0-9f8e-4f0b-b427-ccb12164bbe0/OmiARbf2Jn.lottie"
+                style="width: 300px; height: 300px;"
+                autoplay
+                loop>
+            </dotlottie-wc>
+        </div>
+        <!-- error handling logo  -->
+
+        <div id="error-loader">
+            <dotlottie-wc
+                src="https://lottie.host/6ce67864-e212-46fe-a48a-7a06b2bedd35/QIOLE9shbv.lottie"
+                style="width: 300px; height: 300px;"
+                autoplay
+                loop>
+            </dotlottie-wc>
+        </div>
+
+        <!-- watch now preloader -->
+
+        <div id="watch-now-loader">
+            <dotlottie-wc
+                src="https://lottie.host/2e08a64a-4699-4dbc-b374-3e5c50133017/o4FjNIpD7G.lottie"
+                style="width: 300px; height: 300px;"
+                autoplay
+                loop>
+            </dotlottie-wc>
+        </div>
+        <!-- navbar  -->
+        <nav class="navbar navbar-light">
+            <div class="container">
+                <a class="navbar-brand">
+                    <img src="Assets-1/icon-removebg-preview.png" alt
+                        width="200" height="200">
+                </a>
+            </div>
+        </nav>
+
+        <!-- Image Slider    -->
+
+        <div class="container d-flex justify-content-center ">
+            <div id="carouselExampleFade" class="carousel slide carousel-fade"
+                data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="Assets-1/CJL.png" class="d-block w-100"
+                            alt="...">
+                        <div
+                            class="carousel-caption d-none text-dark d-md-block">
+                            <h5>Chaal Jeevi Laiye</h5>
+                            <p>A father and son meet a stranger on a hike who
+                                provides an experience full of surprises and
+                                realizations.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <img src="Assets-1/jija sala jija.png"
+                            class="d-block w-100" alt="...">
+                        <div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Jija Sala Jija</h5>
+                            <p>Family relationships get hilariously complicated
+                                when three connected brothers-in-law find
+                                themselves in increasingly absurd
+                                situations.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Assets-1/victor 303.png" class="d-block w-100"
+                            alt="Victor 303">
+                        <div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Victor 303</h5>
+                            <p>Following a bitter heartbreak, orphaned Victor
+                                crashes his lover's wedding, unknowingly
+                                sparking a violent feud with the salt mafia that
+                                rules the infamous land of Maliya Miyana.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Assets-1/kashiraghav.png"
+                            class="d-block w-100" alt="...">
+                        <div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Kashi Raghav</h5>
+                            <p>In the shadows of Kolkata and the light of
+                                Varanasi, a mother's love and a truck driver's
+                                guilt collide in a tale of vengeance,
+                                redemption, and sacrifice where fate outshines
+                                hope.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Assets-1/umbaro.avif" class="d-block w-100"
+                            alt="...">
+                        <div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Umbarro</h5>
+                            <p>Seven women from rural Gujarat embark on their
+                                first international trip to London, facing
+                                cultural clashes, language barriers, and
+                                societal stigmas along their journey to claim
+                                their space in the world.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00438460-emjpxunxkd-landscape.jpg"
+                            class="d-block w-100"
+                            alt="Mithada Mehman">
+                        <div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Mithada Mehman</h5>
+                            <p>Aditya plans suicide, but three strangers
+                                intervene unexpectedly. Their encounter leads to
+                                a wild journey filled with tragedy, comedy and
+                                surprising turns of events.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Assets-1/kp.png" class="d-block w-100"
+                            alt="Kehvatlal pariwar">
+                        <div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Kehvatlal Pariwar</h5>
+                            <p>As he's stuggling to keep his family business
+                                afloat, a man's wife returns after 23 years.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br><br>
+
+        <!-- Card -->
+
+        <h2 class="text-center text-warning my-4 ">Golden Jubilee
+            Movies</h2><br>
+        <div
+            class="container-fluid d-flex flex-wrap justify-content-center gap-4 mt-8">
+            <div class="card border-info text-center" style="width: 25rem;">
+                <img src="Assets-1/CJL.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Chaal Jeevi Laiye</h5>
+                    <p class="card-text">A father and son meet a stranger on a
+                        hike who
+                        provides an experience full of surprises and
+                        realizations.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-primary text-center" style="width: 25rem;">
+                <img src="Assets-1/jija sala jija.png" class="card-img-top"
+                    alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Jija Sala Jija</h5>
+                    <p class="card-text">Family relationships get hilariously
+                        complicated
+                        when three connected brothers-in-law find
+                        themselves in increasingly absurd
+                        situations.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-secondary text-center"
+                style="width: 25rem;">
+                <img src="Assets-1/kashiraghav.png" class="card-img-top"
+                    alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Kashi Raghav</h5>
+                    <p class="card-text">In the shadows of Kolkata and the light
+                        of
+                        Varanasi, a mother's love and a truck driver's
+                        guilt collide in a tale of vengeance,
+                        redemption, and sacrifice where fate outshines
+                        hope.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-danger text-center" style="width: 25rem;">
+                <img src="Assets-1/umbaro.avif" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Umbarro</h5>
+                    <p class="card-text">Seven women from rural Gujarat embark
+                        on their
+                        first international trip to London, facing
+                        cultural clashes, language barriers, and
+                        societal stigmas along their journey to claim
+                        their space in the world.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-dark text-center" style="width: 25rem;">
+                <img src="Assets-1/victor 303.png" class="card-img-top"
+                    alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Victor 303</h5>
+                    <p class="card-text">Following a bitter heartbreak, orphaned
+                        Victor
+                        crashes his lover's wedding, unknowingly
+                        sparking a violent feud with the salt mafia that
+                        rules the infamous land of Maliya Miyana.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-success text-center" style="width: 25rem;">
+                <img
+                    src="https://assets-in.bmscdn.com/discovery-catalog/events/et00438460-emjpxunxkd-landscape.jpg"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Mithada Mehmaan</h5>
+                    <p class="card-text">Aditya plans suicide, but three
+                        strangers
+                        intervene unexpectedly. Their encounter leads to
+                        a wild journey filled with tragedy, comedy and
+                        surprising turns of events.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-info text-center" style="width: 25rem;">
+                <img src="Assets-1/kp.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Kehwatlal Pariwar</h5>
+                    <p class="card-text">As he's stuggling to keep his family
+                        business
+                        afloat, a man's wife returns after 23 years.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+        </div><br><br>
+
+        <!-- New image Slider -->
+
+        <h2 class="text-center text-warning my-4">Latest New Movies
+            2025</h2><br>
+        <div class="container d-flex justify-content-center mt-8">
+            <div id="carouselExampleFade" class="carousel slide carousel-fade"
+                data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00428340-rbckzxkhuc-landscape.jpg"
+                            class="d-block w-100"
+                            alt="fati ne">
+                        <div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>fati ne</h5>
+                            <p>To save their job and get their lives back on
+                                track, two goofy police officers must spend the
+                                night at a haunted mansion.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00438460-emjpxunxkd-landscape.jpg"
+                            class="d-block w-100" alt="Mithada Mehmaan"><div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Mithada Mehmaan</h5>
+                            <p>Aditya plans suicide, but three strangers
+                                intervene unexpectedly. Their encounter leads to
+                                a wild journey filled with tragedy, comedy and
+                                surprising turns of events.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00432831-babsrhdsdd-landscape.jpg"
+                            class="d-block w-100"
+                            alt="All The Best Pandya"><div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>All The Best Pandya</h5>
+                            <p>A young man must advocate for his father in court
+                                following a bribery allegation. As they pursue
+                                vindication, they are compelled to confront
+                                their strained association.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00423687-tpdhblssvs-landscape.jpg"
+                            class="d-block w-100" alt="Kashi Raghav"><div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Kashi Raghav</h5>
+                            <p>In the shadows of Kolkata and the light of
+                                Varanasi, a mother's love and a truck driver's
+                                guilt collide in a tale of vengeance,
+                                redemption, and sacrifice where fate outshines
+                                hope.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00433860-gefxjvrety-landscape.jpg"
+                            class="d-block w-100"
+                            alt="Jay Mata Ji"><div
+                            class="carousel-caption text-black d-none d-md-block">
+                            <h5>Jay Mata ji: Let's Rock</h5>
+                            <p>A government scheme turns the life of an
+                                80-year-old lady upside down, presenting her
+                                with four outrageous choices: seek revenge on
+                                her sons and their wives, rekindle a long-lost
+                                love, embrace a swanky lifestyle, or go full
+                                thug life with all of the above.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00426433-qfayyyqgne-landscape.jpg"
+                            class="d-block w-100"
+                            alt="Taaro Thayo"><div
+                            class="carousel-caption text-black-500 d-none d-md-block">
+                            <h5>Taaro Thayo</h5>
+                            <p>Kedar and Mitali reconnect years later as Aarav
+                                and Antara, experiencing their love story twice
+                                across different lifetimes.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00420660-mwajbfxwgg-landscape.jpg"
+                            class="d-block w-100"
+                            alt="Umbarro"><div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Umbarro</h5>
+                            <p>Seven women from rural Gujarat embark on their
+                                first international trip to London, facing
+                                cultural clashes, language barriers, and
+                                societal stigmas along their journey to claim
+                                their space in the world.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://m.media-amazon.com/images/M/MV5BZGY4YzZmZDItMDc2MS00NGRhLTgzYjYtZDFhODhiNzBlMGQ1XkEyXkFqcGc@._V1_.jpg"
+                            class="d-block w-100"
+                            alt="Vash Level 2"><div
+                            class="carousel-caption text-black-500 d-none d-md-block">
+                            <h5>Vash level 2</h5>
+                            <p>Atharva's daunting past comes back to haunt him
+                                12 years after saving his daughter from a dark
+                                force. As he realises the threat never truly
+                                disappeared, he sets out to end the terror once
+                                and for all.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://assets-in.bmscdn.com/discovery-catalog/events/et00438033-ewqdqdldqj-landscape.jpg"
+                            class="d-block w-100"
+                            alt="Jalebi Rocks"><div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Jalebi Rocks</h5>
+                            <p>Jalebi Rocks is a heartfelt family film about
+                                Vidya Pathak, a 48-year-old housewife,
+                                celebrating resilience, self-worth, and a
+                                woman's indomitable spirit.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img
+                            src="https://i.ytimg.com/vi/QSMPIYWxXmw/maxresdefault.jpg"
+                            class="d-block w-100"
+                            alt="Sanghvi and Sons"><div
+                            class="carousel-caption text-white d-none d-md-block">
+                            <h5>Sanghvi and Sons</h5>
+                            <p>The Sanghavi family share an unbreakable bond.
+                                However, as fate presents its trials, their
+                                resilience and love for each other is
+                                tested.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br><br>
+
+        <!-- New Cards -->
+
+        <h2 class="text-center text-warning my-4">Watch Here</h2><br>
+        <div
+            class="container-fluid d-flex flex-wrap justify-content-center gap-4 mt-8">
+            <div class="card border-info text-center" style="width: 25rem;">
+                <img src="Assets-1/faati-ne.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Faati Ne</h5>
+                    <p class="card-text">To save their job and get their lives
+                        back on
+                        track, two goofy police officers must spend the
+                        night at a haunted mansion.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-primary text-center" style="width: 25rem;">
+                <img
+                    src="https://assets-in.bmscdn.com/discovery-catalog/events/et00438460-emjpxunxkd-landscape.jpg"
+                    class="card-img-top"
+                    alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Mithada Mehmaan</h5>
+                    <p class="card-text">Aditya plans suicide, but three
+                        strangers
+                        intervene unexpectedly. Their encounter leads to
+                        a wild journey filled with tragedy, comedy and
+                        surprising turns of events.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-secondary text-center"
+                style="width: 25rem;">
+                <img
+                    src="https://assets-in.bmscdn.com/discovery-catalog/events/et00432831-babsrhdsdd-landscape.jpg"
+                    class="card-img-top"
+                    alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">All The Best Pandya</h5>
+                    <p class="card-text">A young man must advocate for his
+                        father in court
+                        following a bribery allegation. As they pursue
+                        vindication, they are compelled to confront
+                        their strained association.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-danger text-center" style="width: 25rem;">
+                <img src="Assets-1/kashiraghav.png" class="card-img-top"
+                    alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Kashi Raghav</h5>
+                    <p class="card-text">In the shadows of Kolkata and the light
+                        of
+                        Varanasi, a mother's love and a truck driver's
+                        guilt collide in a tale of vengeance,
+                        redemption, and sacrifice where fate outshines
+                        hope.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-dark text-center" style="width: 25rem;">
+                <img
+                    src="https://assets-in.bmscdn.com/discovery-catalog/events/et00433860-gefxjvrety-landscape.jpg"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Jai Mata ji: Let's Rock</h5>
+                    <p class="card-text">A government scheme turns the life of
+                        an
+                        80-year-old lady upside down, presenting her
+                        with four outrageous choices: seek revenge on
+                        her sons and their wives, rekindle a long-lost
+                        love, embrace a swanky lifestyle, or go full
+                        thug life with all of the above.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-success text-center" style="width: 25rem;">
+                <img src="Assets-1/umbaro.avif" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Umbarro</h5>
+                    <p class="card-text">Seven women from rural Gujarat embark
+                        on their
+                        first international trip to London, facing
+                        cultural clashes, language barriers, and
+                        societal stigmas along their journey to claim
+                        their space in the world.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-info text-center" style="width: 25rem;">
+                <img
+                    src="https://assets-in.bmscdn.com/discovery-catalog/events/et00426433-qfayyyqgne-landscape.jpg"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Taaro Thayo</h5>
+                    <p class="card-text">Kedar and Mitali reconnect years later
+                        as Aarav
+                        and Antara, experiencing their love story twice
+                        across different lifetimes.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-info text-center" style="width: 25rem;">
+                <img
+                    src="https://m.media-amazon.com/images/M/MV5BZGY4YzZmZDItMDc2MS00NGRhLTgzYjYtZDFhODhiNzBlMGQ1XkEyXkFqcGc@._V1_.jpg"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Vash Level 2</h5>
+                    <p class="card-text">Atharva's daunting past comes back to
+                        haunt him
+                        12 years after saving his daughter from a dark
+                        force. As he realises the threat never truly
+                        disappeared, he sets out to end the terror once
+                        and for all.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-info text-center" style="width: 25rem;">
+                <img
+                    src="https://assets-in.bmscdn.com/discovery-catalog/events/et00438033-ewqdqdldqj-landscape.jpg"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Jalebi Rocks</h5>
+                    <p class="card-text">Jalebi Rocks is a heartfelt family film
+                        about
+                        Vidya Pathak, a 48-year-old housewife,
+                        celebrating resilience, self-worth, and a
+                        woman's indomitable spirit.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+            <div class="card border-info text-center" style="width: 25rem;">
+                <img
+                    src="https://i.ytimg.com/vi/QSMPIYWxXmw/maxresdefault.jpg"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Sanghvi and Sons</h5>
+                    <p class="card-text">The Sanghavi family share an
+                        unbreakable bond.
+                        However, as fate presents its trials, their
+                        resilience and love for each other is
+                        tested.</p>
+                    <a class="btn btn-primary">Watch Now</a>
+                </div>
+            </div>
+        </div>
+        <!-- footer -->
+
+        <div
+            class="container footer text-center text-white mt-4">
+            <p>All Rights Reserved © 2025. Yash Panchal</p>
+        </div>
+
+        <script>
+    // Normal page load (hide preloader after 4s)
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        document.body.classList.add('loaded');
+      }, 4000);
+    });
+
+    // Show error animation when offline
+    window.addEventListener("offline", function () {
+      document.body.classList.remove("loaded");
+      document.body.classList.add("error");
+    });
+
+    // Hide error animation & show content again when online
+    window.addEventListener("online", function () {
+      document.body.classList.remove("error");
+      document.body.classList.add("loaded");
+    });
+
+    // Handle 404 pages (optional)
+    if (document.title.includes("404") || window.location.pathname.includes("404")) {
+      document.body.classList.remove("loaded");
+      document.body.classList.add("error");
+    }
+
+
+ // Select all Watch Now buttons
+    const watchButtons = document.querySelectorAll('.btn-primary'); 
+  const watchLoader = document.getElementById('watch-now-loader');
+
+  watchButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Show loader
+      watchLoader.classList.add('active');
+
+      // Hide after 5 seconds
+      setTimeout(() => {
+        watchLoader.classList.remove('active');
+      }, 3000);
+    });
+  });
+  </script>
+
+    </body>
+</html>
